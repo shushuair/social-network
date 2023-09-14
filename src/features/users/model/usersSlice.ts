@@ -11,23 +11,23 @@ const getUsers = createAppAsyncThunk<UtilResponse<User[]>, Params>("users/getUse
     return res.data
 })
 
-const followUser = createAppAsyncThunk<{userId: number}, number>("users/followUser", async (userId, thunkAPI) => {
+const followUser = createAppAsyncThunk<{userId:number}, number>("users/follow", async(userId, thunkAPI)=>{
     const {rejectWithValue} = thunkAPI
     const res = await followAPI.follow(userId)
-    if (res.data.resultCode === ResultCode.Success) {
-        return {userId}
+    if(res.data.resultCode === ResultCode.Success){
+       return {userId}
     } else {
-        return rejectWithValue({data: res.data})
+        return rejectWithValue({data:res.data})
     }
 })
 
-const unFollowUser = createAppAsyncThunk<{userId: number}, number>("users/unfollowUser", async (userId, thunkAPI) => {
+const unFollowUser = createAppAsyncThunk<{userId:number}, number>("users/unfollow", async(userId, thunkAPI)=>{
     const {rejectWithValue} = thunkAPI
     const res = await followAPI.unFollow(userId)
-    if (res.data.resultCode === ResultCode.Success) {
+    if(res.data.resultCode === ResultCode.Success){
         return {userId}
     } else {
-        return rejectWithValue({data: res.data})
+        return rejectWithValue({data:res.data})
     }
 })
 
@@ -43,15 +43,15 @@ const slice = createSlice({
             .addCase(getUsers.fulfilled, (state, action)=>{
                 state.users = action.payload.items
             })
-            .addCase(followUser.fulfilled, (state, action) => {
-                const user = state.users.find(el=> el.id === action.payload.userId)
-                if(user) {
+            .addCase(followUser.fulfilled, (state, action)=>{
+                const user = state.users.find(el =>  el.id === action.payload.userId )
+                if(user){
                     user.followed = true
                 }
             })
-            .addCase(unFollowUser.fulfilled, (state, action) => {
-                const user = state.users.find(el=> el.id === action.payload.userId)
-                if(user) {
+            .addCase(unFollowUser.fulfilled, (state, action)=>{
+                const user = state.users.find(el =>  el.id === action.payload.userId )
+                if(user){
                     user.followed = false
                 }
             })

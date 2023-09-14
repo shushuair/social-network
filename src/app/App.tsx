@@ -3,6 +3,7 @@ import 'app/App.module.css';
 import {Login} from "features/auth/ui/Login";
 import {usersThunk} from "features/users/model/usersSlice";
 import {useActions} from "common/hooks/useActions";
+import {Users} from "features/users/ui/Users";
 
 function App() {
     const {getUsers} = useActions(usersThunk)
@@ -28,7 +29,8 @@ useEffect(()=>{
 
       return (
       <div>
-        <Login/>
+        {/*<Login/>*/}
+          <Users/>
       </div>
       )
 }
