@@ -2,7 +2,7 @@ import { BaseResponse } from "common/types/apiTypes"
 import {instance} from "common/api/instance";
 
 export const followAPI = {
-    isFollow(userId: number) {
+    following(userId: number) {
         return instance.get<boolean>(`follow/${userId}`)
     },
     follow(userId: number) {
@@ -12,3 +12,5 @@ export const followAPI = {
         return instance.delete<BaseResponse>(`follow/${userId}`)
     }
 }
+
+

@@ -7,7 +7,6 @@ type Params = {
     term?: string
 }
 
-
 export const usersAPI = {
     users(params: Params) {
         return instance.get<UtilResponse<User[]>>(`users`, {params})
