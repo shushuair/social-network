@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from 'react';
+import 'app/App.module.css';
+import {Login} from "features/auth/ui/Login";
+import {usersThunk} from "features/users/model/usersSlice";
+import {useActions} from "common/hooks/useActions";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const {setUsers} = useActions(usersThunk)
+
+
+useEffect(()=>{
+    usersThunk.setUsers({
+
+    })
+})
+
+
+    // useEffect(() => {
+    //     usersAPI.users({
+    //         count: 2,
+    //         page: 2,
+    //         term: "22"
+    //     })
+    //         .then((res)=>{
+    //             console.log(res)
+    //         })
+    // },[])
+
+      return (
+      <div>
+        <Login/>
+      </div>
+      )
 }
 
 export default App;
