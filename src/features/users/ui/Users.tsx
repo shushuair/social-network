@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useActions} from "common/hooks/useActions";
 import {usersThunk} from "features/users/model/usersSlice";
 import Card from "antd/lib/card/Card";
@@ -7,32 +7,54 @@ import {AppRootState} from "app/store";
 import {User} from "common/types/apiTypes";
 import Meta from "antd/lib/card/Meta";
 import Avatar from "antd/lib/avatar/avatar";
-import {Button} from "antd/lib";
+import {Button, PaginationProps} from "antd/lib";
+import {Pagination} from "antd";
 
 export const Users = () => {
-    const { getUsers, followUser, unFollowUser } = useActions(usersThunk)
-    const users = useSelector<AppRootState, User[]>(state=>state.users.users)
+    const {getUsers, followUser, unFollowUser} = useActions(usersThunk)
+    const users = useSelector<AppRootState, User[]>(state => state.users.users)
+    let totalCount = useSelector<AppRootState, number>(state => state.users.totalCount)
 
-    const params = {}
 
-    useEffect(()=>{
-        getUsers(params)
-    },[])
 
-    const followedUserHandler = (userId: number, isFollowed: boolean) => {
-        if(isFollowed){
+        const followedUserHandler = (userId: number, isFollowed: boolean) => {
+        if (isFollowed) {
             unFollowUser(userId)
         } else {
             followUser(userId)
         }
     }
+    const [paramsPagination, setParamsPagination] = useState({
+        count: 10,
+        page: 1
+    })
+
+    useEffect(() => {
+        getUsers(paramsPagination)
+    }, [paramsPagination])
+
+    const onChange = (page: number, pageSize: number) => {
+        setParamsPagination({...paramsPagination, page, count: pageSize})
+    }
+    const onShowSizeChange = (current: number, size: number) => {
+        setParamsPagination({...paramsPagination, page: current, count: size})
+    }
 
     return (
         <div>
-            {users.map(el=>{
+            <Pagination
+                onShowSizeChange={onShowSizeChange}
+                defaultCurrent={paramsPagination.page}
+                total={totalCount}
+                onChange={onChange}
+                showQuickJumper
+            />
+
+
+            {users.map(el => {
                 return (
                     <Card
-                        style={{ width: 300 }}
+                        style={{width: 300}}
                         cover={
                             <img
                                 alt="example"
@@ -40,7 +62,7 @@ export const Users = () => {
                             />
                         }
                         actions={[
-                            <Button onClick={()=>followedUserHandler(el.id, el.followed)} type="primary">
+                            <Button onClick={() => followedUserHandler(el.id, el.followed)} type="primary">
                                 {el.followed ? "Unfollow" : "Follow"}
                             </Button>
                             // <SettingOutlined key="setting" />,
@@ -49,7 +71,7 @@ export const Users = () => {
                         ]}
                     >
                         <Meta
-                            avatar={<Avatar src="" />}
+                            avatar={<Avatar src=""/>}
                             title="Card title"
                             description="This is the description"
                         />

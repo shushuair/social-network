@@ -1,7 +1,7 @@
 import {User, UtilResponse} from "common/types/apiTypes";
 import {instance} from "common/api/instance";
 
-type Params = {
+export type Params = {
     count?: number
     page?: number
     term?: string
