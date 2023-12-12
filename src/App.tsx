@@ -12,23 +12,28 @@ import {StateType} from "redux/state";
 
 type AppPropsType = {
     state: StateType
-    addUserPost: (newPostText: string)=>void
+    addUserPost: () => void
+    updateNewPostText: (updatePostText: string) => void
 }
 
 
 function App(props: AppPropsType) {
     return (
         <div className="appWrapper">
-
             <Header/>
             <Navbar/>
             <div className={"appWrapperContent"}>
-                <Route path={'/profile'} render={()=> <Profile state={props.state.profilePage} addUserPost={props.addUserPost}/>}/>
+                <Route path={'/profile'}
+                       render={() => <Profile
+                           profilePage={props.state.profilePage}
+                           addUserPost={props.addUserPost}
+                           updateNewPostText={props.updateNewPostText}
+                       />}/>
                 <Route path={'/dialogs'}
-                       render={()=> <Dialogs state={props.state.dialogsPage}/>}/>
-                <Route path={'/news'} render={()=> <News/>}/>
-                <Route path={'/music'} render={()=> <Music/>}/>
-                <Route path={'/settings'} render={()=> <Settings/>}/>
+                       render={()=> <Dialogs dialogsPage={props.state.dialogsPage}/>}/>
+                <Route path={'/news'} render={() => <News/>}/>
+                <Route path={'/music'} render={() => <Music/>}/>
+                <Route path={'/settings'} render={() => <Settings/>}/>
             </div>
         </div>
     )

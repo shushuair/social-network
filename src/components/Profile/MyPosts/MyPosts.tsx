@@ -5,7 +5,9 @@ import {Post} from "components/Profile/MyPosts/Post/Post";
 
 export type MyPostsPropsType = {
     posts: PostType[]
-    addUserPost: (newPostText: string) => void
+    addUserPost: ()=> void
+    newPostText: string
+    updateNewPostText: (updatePostText: string) => void
 }
 
 export const MyPosts = (props: MyPostsPropsType) => {
@@ -17,8 +19,13 @@ export const MyPosts = (props: MyPostsPropsType) => {
 
     const addPostHandler = () => {
         if (newPostElement.current !== null) {
-            props.addUserPost(newPostElement.current.value)
-            newPostElement.current.value = ''
+            props.addUserPost()
+        }
+    }
+
+    const onChangePostText = () => {
+        if(newPostElement.current !== null){
+            props.updateNewPostText(newPostElement.current.value)
         }
     }
 
@@ -27,7 +34,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
             My posts
             <h3>My posts</h3>
             <div className={s.newPostWrap}>
-                <textarea ref={newPostElement}></textarea>
+                <textarea value={props.newPostText} onChange={onChangePostText} ref={newPostElement}></textarea>
                 <button onClick={addPostHandler}>Add post</button>
             </div>
             {postsElements}
