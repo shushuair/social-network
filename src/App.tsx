@@ -11,6 +11,7 @@ import {Settings} from "components/Settings/Settings";
 import {StateType} from "redux/state";
 
 type AppPropsType = {
+    store: any
     state: StateType
     addUserPost: () => void
     updateNewPostText: (updatePostText: string) => void
