@@ -29,9 +29,14 @@ export type StateType = {
     dialogsPage: DialogsPageType
 }
 
+export type ActionType = {
+    type: string
+    [key: string]: any
+}
+
 export const store = {
-    _subscriber(state: StateType) {
-        console.log('there is no subscriber')
+    _callSubscriber(state: StateType) {
+        console.log('there is no observer')
     },
     _state: {
         profilePage: {
@@ -60,20 +65,40 @@ export const store = {
         return this._state
     },
     subscribe (observer: (state: StateType)=>void){
-        this._subscriber = observer
+        this._callSubscriber = observer
     },
-    addUserPost () {
-        let newPost = {
-            id: 3,
-            message: this._state.profilePage.newPostText,
-            likeCount: 0
+    dispatch(action: UnitedType) {
+        if(action.type === "ADD-POST"){
+            let newPost = {
+                id: 3,
+                message: this._state.profilePage.newPostText,
+                likeCount: 0
+            }
+            this._state.profilePage.posts.unshift(newPost)
+            this._state.profilePage.newPostText = ""
+            this._callSubscriber(this._state)
+        } else if (action.type === "UPDATE-POST"){
+            this._state.profilePage.newPostText = action.payload.newText
+            this._callSubscriber(this._state)
         }
-        this._state.profilePage.posts.unshift(newPost)
-        this._state.profilePage.newPostText = ""
-        this._subscriber(this._state)
-    },
-    updateNewPostText(updatePostText: string) {
-        this._state.profilePage.newPostText = updatePostText
-        this._subscriber(this._state)
     }
+}
+
+export type UnitedType = AddPostACType | UpdatePostACType
+
+export type AddPostACType = ReturnType<typeof addPostAC>
+export const addPostAC = ()=>{
+    return {
+        type: "ADD-POST"
+    } as const
+}
+
+export type UpdatePostACType = ReturnType<typeof updatePostAC>
+export const updatePostAC = (newText: string)=>{
+    return {
+        type: "UPDATE-POST",
+        payload: {
+            newText
+        }
+    } as const
 }
