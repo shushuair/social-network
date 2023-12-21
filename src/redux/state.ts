@@ -17,6 +17,7 @@ export type PostType = {
 export type DialogsPageType = {
     dialogs: DialogType[]
     messages: MessageType[]
+    newMessageText: string
 }
 
 export type ProfilePageType = {
@@ -29,9 +30,12 @@ export type StateType = {
     dialogsPage: DialogsPageType
 }
 
-export type ActionType = {
-    type: string
-    [key: string]: any
+export type StoreType = {
+    _callSubscriber: (state:StateType)=>void
+    _state: StateType
+    getState: ()=>StateType
+    subscribe: (observer:(state:StateType)=>void)=>void
+    dispatch: (action: UnitedType)=>void
 }
 
 export const store = {
@@ -58,7 +62,8 @@ export const store = {
                 {id: 1, message: "What are you talking about?"},
                 {id: 2, message: "Never mind, just forget it"},
                 {id: 3, message: "No worries, take care"},
-            ]
+            ],
+            newMessageText: ''
         }
     },
     getState() {
@@ -77,14 +82,24 @@ export const store = {
             this._state.profilePage.posts.unshift(newPost)
             this._state.profilePage.newPostText = ""
             this._callSubscriber(this._state)
-        } else if (action.type === "UPDATE-POST"){
+        }
+        else if (action.type === "UPDATE-POST"){
             this._state.profilePage.newPostText = action.payload.newText
+            this._callSubscriber(this._state)
+        }   else if (action.type === 'NEW-MESSAGE') {
+            let newMessage = {id: 4 , message: this._state.dialogsPage.newMessageText}
+            this._state.dialogsPage.messages.push(newMessage)
+            this._state.dialogsPage.newMessageText = ''
+            this._callSubscriber(this._state)
+        }
+        else if (action.type === 'UPDATE-MESSAGE') {
+            this._state.dialogsPage.newMessageText = action.payload.updateMessageText
             this._callSubscriber(this._state)
         }
     }
 }
 
-export type UnitedType = AddPostACType | UpdatePostACType
+export type UnitedType = AddPostACType | UpdatePostACType | NewMessageACType | UpdateMessageACType
 
 export type AddPostACType = ReturnType<typeof addPostAC>
 export const addPostAC = ()=>{
@@ -99,6 +114,23 @@ export const updatePostAC = (newText: string)=>{
         type: "UPDATE-POST",
         payload: {
             newText
+        }
+    } as const
+}
+
+export type NewMessageACType = ReturnType<typeof newMessageAC>
+export const newMessageAC = () => {
+    return {
+        type: 'NEW-MESSAGE',
+    } as const
+}
+
+export type UpdateMessageACType = ReturnType<typeof updateMessageAC>
+export const updateMessageAC = (updateMessageText: string) => {
+    return {
+        type: 'UPDATE-MESSAGE',
+        payload: {
+            updateMessageText
         }
     } as const
 }

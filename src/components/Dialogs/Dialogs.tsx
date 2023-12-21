@@ -1,39 +1,44 @@
-import React, {useRef} from 'react';
-import s from './Dialogs.module.css'
-import {DialogsPageType} from "redux/state";
-import {DialogItem} from "components/Dialogs/DialogItem/DialogItem";
-import {Message} from "components/Dialogs/Message/Message";
+import React, { ChangeEvent, useRef } from "react"
+import s from "./Dialogs.module.css"
+import { DialogsPageType, newMessageAC, StoreType, UnitedType, updateMessageAC } from "redux/state"
+import { DialogItem } from "components/Dialogs/DialogItem/DialogItem"
+import { Message } from "components/Dialogs/Message/Message"
 
 export type DialogsPropsType = {
-    dialogsPage: DialogsPageType
+  store: StoreType
+  dispatch: (action: UnitedType) => void
 }
 export const Dialogs = (props: DialogsPropsType) => {
 
-    const dialogsElements = props.dialogsPage.dialogs.map(dialog => <DialogItem id={dialog.id} name={dialog.name}/>)
-    const messagesElements = props.dialogsPage.messages.map(message => <Message id={message.id} message={message.message}/>)
+  const state = props.store.getState().dialogsPage
 
-    const newMessageElement = useRef<HTMLTextAreaElement>(null)
-    const newMessageHandler = () => {
-        if (newMessageElement.current !== null) {
-            alert(newMessageElement.current.value)
-        }
-    }
-    return (
-        <div className={s.dialogsWrapperContent}>
-            <div className={s.dialogWrapper}>
-                <ul className={s.dialogList}>
-                    {dialogsElements}
-                </ul>
-            </div>
-            <div className={s.messagesWrapper}>
-                <ul className={s.messagesList}>
-                    {messagesElements}
-                </ul>
-                <textarea ref={newMessageElement}></textarea>
-                <button onClick={newMessageHandler}>+</button>
-            </div>
+  const dialogsElements = state.dialogs.map(dialog => <DialogItem id={dialog.id} name={dialog.name} />)
+  const messagesElements = state.messages.map(message => <Message id={message.id} message={message.message} />)
 
-        </div>
-    );
-};
+  const newMessageText = state.newMessageText
+
+  const newMessageHandler = () => props.dispatch(newMessageAC())
+  const updateNewMessageHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    props.dispatch(updateMessageAC(e.currentTarget.value))
+  }
+  return (
+    <div className={s.dialogsWrapperContent}>
+      <div className={s.dialogWrapper}>
+        <ul className={s.dialogList}>
+          {dialogsElements}
+        </ul>
+      </div>
+      <div className={s.messagesWrapper}>
+        <ul className={s.messagesList}>
+          {messagesElements}
+        </ul>
+        <textarea placeholder={"Type your new message"}
+                  value={newMessageText}
+                  onChange={updateNewMessageHandler}></textarea>
+        <button onClick={newMessageHandler}>Send</button>
+      </div>
+
+    </div>
+  )
+}
 
