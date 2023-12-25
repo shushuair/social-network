@@ -3,7 +3,7 @@ import "./App.css"
 import { Header } from "components/Header/Header"
 import { Navbar } from "components/NavBar/Navbar"
 import { Profile } from "components/Profile/Profile"
-import { Dialogs } from "components/Dialogs/Dialogs"
+import { DialogsContainer } from "./components/Dialogs/DialogsContainer"
 import { Route } from "react-router-dom"
 import { Music } from "components/Music/Music"
 import { News } from "components/News/News"
@@ -24,12 +24,9 @@ function App(props: AppPropsType) {
       <Navbar />
       <div className={"appWrapperContent"}>
         <Route path={"/profile"}
-               render={() => <Profile
-                 profilePage={props.state.profilePage}
-                 dispatch={props.dispatch}
-               />} />
+               render={() => <Profile store={props.store} />} />
         <Route path={"/dialogs"}
-               render={() => <Dialogs store={props.store} dispatch={props.dispatch} />} />
+               render={() => <DialogsContainer store={props.store} />} />
         <Route path={"/news"} render={() => <News />} />
         <Route path={"/music"} render={() => <Music />} />
         <Route path={"/settings"} render={() => <Settings />} />

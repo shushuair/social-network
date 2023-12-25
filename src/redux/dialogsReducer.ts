@@ -2,16 +2,16 @@ import { DialogsPageType, UnitedType } from "./store"
 
 const initialState: DialogsPageType = {
   dialogs: [
-    { id: 1, name: "Pavel" },
-    { id: 2, name: "Sasha" },
-    { id: 3, name: "Vlad" },
-    { id: 4, name: "Nastya" },
-    { id: 5, name: "Dima" }
+    {id: 1, name: "James"},
+    {id: 2, name: "Darren"},
+    {id: 3, name: "Jennifer"},
+    {id: 4, name: "Ola"},
+    {id: 5, name: "Mal"},
   ],
   messages: [
-    { id: 1, message: "Hello, how are you?" },
-    { id: 2, message: "Im fine, thx" },
-    { id: 3, message: "Okay" }
+    {id: 1, message: "What are you talking about?"},
+    {id: 2, message: "Never mind, just forget it"},
+    {id: 3, message: "No worries, take care"},
   ],
   newMessageText: ""
 }

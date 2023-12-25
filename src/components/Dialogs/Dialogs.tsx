@@ -1,22 +1,21 @@
 import React from "react"
 import s from "./Dialogs.module.css"
-import { StoreType, UnitedType } from "../../redux/store"
+import { DialogType, MessageType } from "../../redux/store"
 
 import { DialogItem } from "components/Dialogs/DialogItem/DialogItem"
-import { Message } from "components/Dialogs/Message/Message"
-import { MessageSender } from "./Message/MessageSender/MessageSender"
+import { MessageSenderContainer } from "./Message/MessageSender/MessageSenderContainer"
+import { Message } from "./Message/Message"
 
 
 export type DialogsPropsType = {
-  store: StoreType
-  dispatch: (action: UnitedType) => void
+  dialogs: DialogType[]
+  messages: MessageType[]
+  store: any
 }
 export const Dialogs = (props: DialogsPropsType) => {
 
-  const state = props.store.getState().dialogsPage
-
-  const dialogsElements = state.dialogs.map(dialog => <DialogItem id={dialog.id} name={dialog.name} />)
-  const messagesElements = state.messages.map(message => <Message id={message.id} message={message.message} />)
+  const dialogsElements = props.dialogs.map(dialog => <DialogItem id={dialog.id} name={dialog.name}/>)
+  const messagesElements = props.messages.map(message => <Message id={message.id} message={message.message}/>)
 
   return (
     <div className={s.dialogsWrapperContent}>
@@ -29,7 +28,7 @@ export const Dialogs = (props: DialogsPropsType) => {
         <ul className={s.messagesList}>
           {messagesElements}
         </ul>
-        <MessageSender state={state} dispatch={props.dispatch}/>
+        <MessageSenderContainer store={props.store}/>
       </div>
 
     </div>
