@@ -1,6 +1,7 @@
-import React, { useRef } from "react"
+import React from "react"
 import s from "./MyPosts.module.css"
-import { addPostAC, PostType, UnitedType, updatePostAC } from "redux/state"
+import { PostType, UnitedType } from "../../../redux/store"
+import { addPostAC, updatePostAC } from "../../../redux/profileReducer"
 import { Post } from "components/Profile/MyPosts/Post/Post"
 
 export type MyPostsPropsType = {
