@@ -1,25 +1,25 @@
-import React from 'react';
-import {newMessageAC, updateMessageAC} from "../../../../redux/dialogsReducer";
-import {MessageSender} from "./MessageSender";
+import { newMessageAC, updateMessageAC } from "../../../../redux/dialogsReducer"
+import { MessageSender } from "./MessageSender"
 
-export type MessageSenderPropsType = {
-  store: any
+import { connect } from "react-redux"
+import { StateType } from "../../../../redux/redux-store"
+
+
+const mapStateToProps = (state: StateType) => {
+  return {
+    newMessageText: state.dialogsPage.newMessageText
+  }
 }
 
-
-export const MessageSenderContainer = (props: MessageSenderPropsType) => {
-
-  const newMessageText = props.store.getState().dialogsPage.newMessageText
-
-  const newMessageHandler = () => props.store.dispatch(newMessageAC())
-
-  const updateNewMessageHandler = (text: string) => {
-    props.store.dispatch(updateMessageAC(text))
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    getNewMessage: ()=>{
+      dispatch(newMessageAC())
+    },
+    updateNewMessage: (text: string)=> {
+      dispatch(updateMessageAC(text))
+    }
   }
+}
 
-
-  return <MessageSender newMessageText={newMessageText}
-                        getNewMessage={newMessageHandler}
-                        updateNewMessage={updateNewMessageHandler}
-  />
-};
+export const MessageSenderContainer = connect(mapStateToProps, mapDispatchToProps)(MessageSender)

@@ -1,4 +1,4 @@
-import { DialogsPageType, UnitedType } from "./store"
+import { DialogsPageType, UnitedType } from "./redux-store"
 
 const initialState: DialogsPageType = {
   dialogs: [
@@ -21,14 +21,11 @@ export const dialogsReducer = (state: DialogsPageType = initialState, action: Un
   switch (action.type) {
     case "NEW-MESSAGE": {
       let newMessage = { id: 4, message: state.newMessageText }
-      state.messages.push(newMessage)
       state.newMessageText = ""
-      return state
+      return {...state, messages: [...state.messages, newMessage]}
     }
     case "UPDATE-MESSAGE": {
-      state.newMessageText = action.payload.updateMessageText
-      return state
-
+      return {...state, newMessageText: action.payload.updateMessageText}
     }
     default:
       return state

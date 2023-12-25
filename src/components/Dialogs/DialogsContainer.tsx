@@ -1,15 +1,18 @@
-import React from "react"
 import { Dialogs } from "./Dialogs"
+import { connect } from "react-redux"
+import { StateType } from "../../redux/redux-store"
 
-export type DialogsPropsType = {
-  store: any
+const mapStateToProps = (state: StateType) => {
+  return {
+    dialogs: state.dialogsPage.dialogs,
+    messages: state.dialogsPage.messages,
+  }
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+  return {
 
-export const DialogsContainer = (props: DialogsPropsType) => {
+  }
+}
 
-  const state = props.store.getState().dialogsPage
-
-
-  return <Dialogs store={props.store} dialogs={state.dialogs} messages={state.messages}/>
-};
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)

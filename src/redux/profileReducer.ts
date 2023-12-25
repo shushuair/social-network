@@ -1,4 +1,4 @@
-import { ProfilePageType, UnitedType } from "./store"
+import { ProfilePageType, UnitedType } from "./redux-store"
 
 const initialState: ProfilePageType = {
   posts: [
@@ -12,9 +12,8 @@ export const profileReducer = (state: ProfilePageType = initialState, action: Un
   switch (action.type) {
     case "ADD-POST": {
       let newPost = { id: 3, message: state.newPostText, likeCount: 0 }
-      state.posts.unshift(newPost)
       state.newPostText = ""
-      return state
+      return {...state, posts: [newPost,...state.posts]}
     }
     case "UPDATE-POST": {
       state.newPostText = action.payload.newText
