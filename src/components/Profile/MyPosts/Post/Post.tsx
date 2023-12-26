@@ -1,25 +1,26 @@
-import React from 'react';
-import s from './Post.module.css'
+import React from "react"
+import s from "./Post.module.css"
 
 export type PostPropsType = {
-    id: number
-    message: string
-    likeCount: number
+  id: number
+  message: string
+  likeCount: number
 }
 
 
 export const Post = (props: PostPropsType) => {
-    return (
-        <div className={s.content}>
-            <div className={s.postWrap}>
-                <img className={s.avatarImage} loading="lazy"
-                     src={'https://d.newsweek.com/en/full/2027477/avatar-2-movie.jpg?w=1600&h=1600&q=88&f=a9c76735de5944303f821b996fd8a21c'}
-                     alt={'avatar'}/>
-                <p>{props.message}</p>
-            </div>
-            <div className={s.likeWrap}>
-                <span>like: {props.likeCount}</span>
-            </div>
-        </div>
-    )
+  return (
+    <div className={s.post}>
+      <div className={s.postWrap}>
+        <img className={s.avatarImage} loading="lazy"
+             src={"https://avatars.mds.yandex.net/i?id=9690567e5e6fb690dc43597b14148235a9c6a99e-9167398-images-thumbs&n=13"}
+             alt={"avatar"} />
+        <p>{props.message}</p>
+      </div>
+      <div className={s.likeWrap}>
+        <span className={s.likeIcon}></span>
+        <span className={s.likeCount}>like: {props.likeCount}</span>
+      </div>
+    </div>
+  )
 }
